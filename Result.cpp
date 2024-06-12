@@ -64,6 +64,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
         }
     };
 
+    // State 状態
     static ImVector<NodeBase> nodes;
     static ImVector<NodeLink> links;
     static ImVec2 scrolling = ImVec2(0.0f, 0.0f);
@@ -71,6 +72,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
     static bool show_grid = true;
     static int node_selected = -1;
 
+    // Initialization 初期化
     ImGuiIO& io = ImGui::GetIO();
     if (!inited)
     {
@@ -82,6 +84,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
         inited = true;
     }
 
+    // 左側にノードのリストを描画
     bool open_context_menu = false;
     int node_hovered_in_list = -1;
     int node_hovered_in_scene = -1;
@@ -109,6 +112,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
     const float NODE_SLOT_RADIUS = 4.0f;
     const ImVec2 NODE_WINDOW_PADDING(8.0f, 8.0f);
 
+    // 子キャンバスを作成
     ImGui::Text("Hold middle mouse button to scroll (%.2f,%.2f)", scrolling.x, scrolling.y);
     ImGui::SameLine(ImGui::GetWindowWidth() - 100);
     ImGui::Checkbox("Show grid", &show_grid);
@@ -122,6 +126,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
     const ImVec2 offset = ImGui::GetCursorScreenPos() + scrolling;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
+    // グリッドを表示
     if (show_grid)
     {
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
@@ -134,6 +139,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
             draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(canvas_sz.x, y) + win_pos, GRID_COLOR);
     }
 
+    // Display links リンクを表示
     draw_list->ChannelsSplit(2);
     draw_list->ChannelsSetCurrent(0); // Background
     for (int link_idx = 0; link_idx < links.Size; link_idx++)
@@ -146,12 +152,14 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
         draw_list->AddBezierCubic(p1, p1 + ImVec2(+50, 0), p2 + ImVec2(-50, 0), p2, IM_COL32(200, 200, 100, 255), 3.0f);
     }
 
+    // Display nodes ノードを表示
     for (int node_idx = 0; node_idx < nodes.Size; node_idx++)
     {
         NodeBase* node = &nodes[node_idx];
         ImGui::PushID(node->ID);
         ImVec2 node_rect_min = offset + node->Pos;
 
+        // Display node contents first 最初にノードの内容を表示
         draw_list->ChannelsSetCurrent(1); // Foreground
         bool old_any_active = ImGui::IsAnyItemActive();
         ImGui::SetCursorScreenPos(node_rect_min + NODE_WINDOW_PADDING);
@@ -162,10 +170,12 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
         ImGui::DragFloat3("Position", &node->Pos.x, 1.0f, 0.0f, 500.0f, "%.1f");
         ImGui::EndGroup();
 
+        // 出力したもののサイズと、ウィジェットが使用されているかどうかを保存
         bool node_widgets_active = (!old_any_active && ImGui::IsAnyItemActive());
         node->Size = ImGui::GetItemRectSize() + NODE_WINDOW_PADDING + NODE_WINDOW_PADDING;
         ImVec2 node_rect_max = node_rect_min + node->Size;
 
+        // ノードボックスを表示
         draw_list->ChannelsSetCurrent(0); // Background
         ImGui::SetCursorScreenPos(node_rect_min);
         ImGui::InvisibleButton("node", node->Size);
@@ -212,6 +222,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
     }
     draw_list->ChannelsMerge();
 
+    // テキストメニューを開く
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Right))
         if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup) || !ImGui::IsAnyItemHovered())
         {
@@ -227,6 +238,7 @@ void Result::ShowExampleAppCustomNodeGraph(bool* opened)
             node_selected = node_hovered_in_scene;
     }
 
+    // コンテキストメニューを描画
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(8, 8));
     if (ImGui::BeginPopup("context_menu"))
     {
