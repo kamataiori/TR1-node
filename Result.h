@@ -4,7 +4,7 @@
 #include "imgui.h" // Dear ImGuiのメインヘッダー
 #include "imgui_internal.h" // 内部関数や構造体のため（必要な場合）
 #include "imconfig.h" // 追加の設定があれば
-#include "imgui_node_graph_test.cpp"
+#include "imgui_node_test.cpp"
 
 struct NodeBase
 {

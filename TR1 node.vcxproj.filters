@@ -41,10 +41,10 @@
     <ClCompile Include="MainLoop.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_node_graph_test.cpp">
+    <ClCompile Include="Result.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Result.cpp">
+    <ClCompile Include="imgui_node_test.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,5 +122,8 @@
     </ClInclude>
     <ClInclude Include="MainLoop.h" />
     <ClInclude Include="Result.h" />
+    <ClInclude Include="imgui_node_test.h">
+      <Filter>KamataEngine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
